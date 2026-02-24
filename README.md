@@ -1,6 +1,6 @@
-# LÖVE/LÖVR fennel REPL
+# LÖVE/LÖVR REPL
 
-[Fennel](https://fennel-lang.org/) REPL for LÖVE and LÖVR, using https://gist.github.com/technomancy/9bb2be6bd1a5d8a242be4124306a63c7
+REPL for LÖVE and LÖVR
 
 ![screenshot](docs/screenshot.png)
 
