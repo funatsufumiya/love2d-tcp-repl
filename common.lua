@@ -12,11 +12,10 @@ export.buffer = {}
 
 local dp = print
 function export.out(xs)
-  local buf = export.buffer
   for _, x in ipairs(xs) do
-    table.insert(buf, x)
+    table.insert(export.buffer, x)
   end
-  return buf
+  return export.buffer
 end
 _G.print = function(...)
   export.out({...})
@@ -24,7 +23,7 @@ _G.print = function(...)
 end
 function export.err(_errtype, msg)
   for line in msg:gmatch("([^\n]+)") do
-    table.insert(export.buffer, {{0.9, 0.4, 0.5}, line})
+    table.insert(export.buffer, "[err] " .. line)
   end
   return nil
 end
@@ -35,7 +34,8 @@ coroutine.resume(repl, {readChunk = coroutine.yield, onValues = export.out, onEr
 
 function export.eval(s)
   dp(s)
-  coroutine.resume(repl, s)
+  table.insert(export.buffer, "> " .. s)
+  coroutine.resume(repl, s .. "\n")
   dp(#export.buffer)
 end
 
