@@ -11,7 +11,9 @@ export.buffer = {}
 local dp = print
 function export.out(xs)
   for _, x in ipairs(xs) do
-    table.insert(export.buffer, x)
+    for line in x:gmatch("([^\n]+)") do
+      table.insert(export.buffer, line)
+    end
   end
   return export.buffer
 end
