@@ -1,4 +1,6 @@
 local export = {}
+local stringify = require('stringify')
+local array = require('array')
 
 local is_lovr = _G.lovr
 if is_lovr then
@@ -10,12 +12,13 @@ export.buffer = {}
 
 local dp = print
 function export.out(xs)
+  local t = {}
   for _, x in ipairs(xs) do
     for line in x:gmatch("([^\n]+)") do
-      table.insert(export.buffer, line)
+      table.insert(t, line)
     end
   end
-  return export.buffer
+  export.buffer = array.concat(t, export.buffer)
 end
 _G.print = function(...)
   export.out({...})
@@ -43,14 +46,14 @@ _G.warn = function(...)
   return nil
 end
 
-function export.eval(inCodeStr)
+function export.eval_impl(inCodeStr)
     if inCodeStr:find("=") then
         fn = load(inCodeStr)
     else
-        fn = load("return export.out(" .. inCodeStr .. ")")
+        fn = load("return (" .. inCodeStr .. ")")
     end
 
-    return fn()()
+    return fn()
 
     -- local r,s=fn(inCodeStr)
     -- if r~=nil then
@@ -60,19 +63,24 @@ function export.eval(inCodeStr)
     -- end
 end
 
-local repl = coroutine.create(function ()
-  while true
-  do
-    export.eval(coroutine.yield)
-  end
-end)
+-- local repl = coroutine.create(function ()
+--   while true
+--   do
+--     export.out(export.eval(coroutine.yield))
+--   end
+-- end)
 
-coroutine.resume(repl)
+-- coroutine.resume(repl)
 
 function export.eval(s)
   -- dp(s)
-  table.insert(export.buffer, "> " .. s)
-  coroutine.resume(repl, s)
+  -- coroutine.resume(repl, s)
+  export.out({stringify(export.eval_impl(s))})
+
+  local t = {}
+  table.insert(t, "> " .. s)
+  export.buffer = array.concat(t, export.buffer)
+  
   -- dp(#export.buffer)
 end
 

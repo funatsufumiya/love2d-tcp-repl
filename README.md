@@ -15,4 +15,6 @@ $ lovr .
 
 ## Dependencies
 
-- [lovr-ui2d (MIT-LICENSE)](https://github.com/immortalx74/lovr-ui2d/tree/main?tab=MIT-1-ov-file#readme)
+- [lovr-ui2d (MIT-LICENSE)](https://github.com/immortalx74/lovr-ui2d)
+- [stringify (MIT-LICENSE)](https://github.com/kitsunies/stringify.lua)
+- [array.lua (MIT-LICENSE)](https://github.com/EvandroLG/array.lua)
