@@ -1,5 +1,3 @@
-local fennel = require("fennel")
-
 local export = {}
 
 local is_lovr = _G.lovr
@@ -27,16 +25,53 @@ function export.err(_errtype, msg)
   end
   return nil
 end
-local repl = coroutine.create(function (opt)
-  fennel.repl(opt)
+
+function export.warn(_errtype, msg)
+  for line in msg:gmatch("([^\n]+)") do
+    table.insert(export.buffer, "[warn] " .. line)
+  end
+  return nil
+end
+_G.error = function(...)
+  export.err({...})
+  return nil
+end
+_G.warn = function(...)
+  export.warn({...})
+  return nil
+end
+
+function export.eval(inCodeStr)
+    if inCodeStr:find("=") then
+        fn = load(inCodeStr)
+    else
+        fn = load("return export.out(" .. inCodeStr .. ")")
+    end
+
+    return fn()()
+
+    -- local r,s=fn(inCodeStr)
+    -- if r~=nil then
+    --     return r()
+    -- else
+    --     export.err(s)
+    -- end
+end
+
+local repl = coroutine.create(function ()
+  while true
+  do
+    export.eval(coroutine.yield)
+  end
 end)
-coroutine.resume(repl, {readChunk = coroutine.yield, onValues = export.out, onError = export.err})
+
+coroutine.resume(repl)
 
 function export.eval(s)
-  dp(s)
+  -- dp(s)
   table.insert(export.buffer, "> " .. s)
-  coroutine.resume(repl, s .. "\n")
-  dp(#export.buffer)
+  coroutine.resume(repl, s)
+  -- dp(#export.buffer)
 end
 
 function export.setInput(s)
