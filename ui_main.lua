@@ -16,10 +16,15 @@ function export.draw()
 	end
 	UI2D.End()
 
+    local lst = {}
+    if common.getBufferLen() > 0 then
+        lst = common.getBuffer()
+    end
+
 	UI2D.Begin( "output", 0, 130 )
 	-- UI2D.Label("                     ")
 	-- UI2D.Label("a b\nc d\ne f")
-	local clicked, idx = UI2D.ListBox( "", 20, 40, {} )
+	local clicked, idx = UI2D.ListBox( "", 20, 40, lst )
 	-- if clicked then
 	-- 	-- print( "selected item: " .. idx .. " - " .. some_list[ idx ] )
 	-- end
