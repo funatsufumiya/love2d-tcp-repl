@@ -48,12 +48,12 @@ end
 
 function export.eval_impl(inCodeStr)
     if inCodeStr:find("=") then
-        fn = load(inCodeStr)
+        ___fn = load(inCodeStr)
     else
-        fn = load("return (" .. inCodeStr .. ")")
+        ___fn = load("return (" .. inCodeStr .. ")")
     end
 
-    return fn()
+    return ___fn()
 
     -- local r,s=fn(inCodeStr)
     -- if r~=nil then
