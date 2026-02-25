@@ -5,10 +5,10 @@ TCP (telnet) REPL for LÖVE and LÖVR
 ## Usage
 
 ```bash
-$ love .
+$ love --console .
 
 # or
-$ lovr .
+$ lovr --console .
 
 # TCP (telnet) REPL is listening 127.0.0.1:65471 ...
 ```
