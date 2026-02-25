@@ -1,4 +1,4 @@
-# LÖVE/LÖVR TCP REPL
+# LÖVE/LÖVR TCP (telnet) REPL
 
 TCP (telnet) REPL for LÖVE and LÖVR
 
