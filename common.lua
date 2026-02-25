@@ -53,7 +53,14 @@ function export.eval_impl(inCodeStr)
         ___fn = load("return (" .. inCodeStr .. ")")
     end
 
-    return ___fn()
+    if ___fn then
+      return ___fn()
+    else
+      -- WORKAROUND
+      -- export.err(nil, debug.traceback)
+      return nil
+      -- return export.err(nil, )
+    end
 
     -- local r,s=fn(inCodeStr)
     -- if r~=nil then
