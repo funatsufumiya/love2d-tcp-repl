@@ -10,7 +10,7 @@ $ love .
 # or
 $ lovr .
 
-# TCP REPL is listening 127.0.0.1:65471 ...
+# TCP (telnet) REPL is listening 127.0.0.1:65471 ...
 ```
 
 ```bash
