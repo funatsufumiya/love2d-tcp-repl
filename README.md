@@ -1,8 +1,6 @@
-# LÖVE/LÖVR REPL
+# LÖVE/LÖVR TCP REPL
 
-REPL for LÖVE and LÖVR
-
-![screenshot](docs/screenshot.png)
+TCP (telnet) REPL for LÖVE and LÖVR
 
 ## Usage
 
@@ -11,10 +9,27 @@ $ love .
 
 # or
 $ lovr .
+
+# TCP REPL is listening 127.0.0.1:65471 ...
+```
+
+```bash
+$ telnet 127.0.0.1 65471
+
+> 1 + 1
+2
+> print("test")
+test
+nil
 ```
 
 ## Dependencies
 
-- [lovr-ui2d (MIT-LICENSE)](https://github.com/immortalx74/lovr-ui2d)
 - [stringify (MIT-LICENSE)](https://github.com/kitsunies/stringify.lua)
 - [array.lua (MIT-LICENSE)](https://github.com/EvandroLG/array.lua)
+
+### LoVR Plugins
+
+***NOTE***: Check [Plugins](https://lovr.org/docs/Plugins) how to use them.
+
+- [lovr-luasocket](https://github.com/brainrom/lovr-luasocket)
