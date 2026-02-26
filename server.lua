@@ -1,6 +1,12 @@
 local socket = require("socket")
 local repl = require("repl")
 
+if not love then
+    lovr = require("lovr")
+    lovr.filesystem = require("lovr.filesystem")
+    lovr.thread = require("lovr.thread")
+end
+
 function trim(s)
    return (s:gsub("^%s*(.-)%s*$", "%1"))
 end

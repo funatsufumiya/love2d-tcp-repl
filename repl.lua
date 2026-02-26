@@ -13,6 +13,7 @@ end
 local server_thread
 
 function export.server_start(global)
+  print(global)
 	if lovr then
 		server_thread = lovr.thread.newThread("server.lua")
 	else
