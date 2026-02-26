@@ -1,1 +1,1 @@
-local a = 1
+print("hello. I'm a server.")
