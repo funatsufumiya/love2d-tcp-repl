@@ -12,13 +12,19 @@ end
 
 local server_thread
 
-function export.server_start()
+function export.server_start(global)
 	if lovr then
 		server_thread = lovr.thread.newThread("server.lua")
 	else
 		server_thread = love.thread.newThread("server.lua")
 	end
 	server_thread:start()
+
+  if lovr then
+    lovr.thread.getChannel( 'globals' ):push( global )
+  else
+    love.thread.getChannel( 'globals' ):push( global )
+  end
 end
 
 export.input = {}
@@ -83,7 +89,8 @@ end
 
 -- coroutine.resume(repl)
 
-function export.eval(s)
+function export.eval(global, s)
+  local g = global
   -- dp(s)
 
   _G.print = function(...)
