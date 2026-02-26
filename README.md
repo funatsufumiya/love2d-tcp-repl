@@ -31,6 +31,7 @@ nil
 ### LoVR Plugins
 
 ***NOTE***: Check [Plugins](https://lovr.org/docs/Plugins) how to use them.
+     You can use [prebuilt lovr executable](https://github.com/funatsufumiya/love2d-tcp-repl/releases/tag/v0.1) from releases.
 
 - [lovr-luasocket](https://github.com/brainrom/lovr-luasocket)
 
