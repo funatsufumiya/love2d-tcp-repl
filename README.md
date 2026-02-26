@@ -39,4 +39,5 @@ nil
 
 ## TODO
 
-- expose global variable `_G` between server session (thread) and love2d main session
+- Expose global variable `_G` between server session (thread) and love2d main session
+    - Maybe server session should be replaced as coroutine instead of thread.
