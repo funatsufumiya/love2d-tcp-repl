@@ -1,13 +1,4 @@
-local server_thread
-
-function server_start()
-	if lovr then
-		server_thread = lovr.thread.newThread("server.lua")
-	else
-		server_thread = love.thread.newThread("server.lua")
-	end
-	server_thread:start()
-end
+local repl = require("repl")
 
 ----
 
@@ -16,11 +7,11 @@ local t = 0
 -- load
 if lovr then
 	function lovr.load()
-		server_start()
+		repl.server_start()
 	end
 else
 	function love.load()
-		server_start()
+		repl.server_start()
 	end
 end
 

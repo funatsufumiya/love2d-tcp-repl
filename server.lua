@@ -1,29 +1,41 @@
 local socket = require("socket")
+local repl = require("repl")
+
+function trim(s)
+   return (s:gsub("^%s*(.-)%s*$", "%1"))
+end
+
 local server = assert(socket.bind("*", 0))
 -- find out which port the OS chose for us
 local ip, port = server:getsockname()
--- print a message informing what's up
-print("Please telnet to localhost on port " .. port)
-print("After connecting, you have 10s to enter a line to be echoed")
 
--- loop forever waiting for clients
+
+print("Listening tcp://localhost:" .. port .. " ...")
+print("--- Please telnet to localhost on port " .. port)
+print("--- After connecting, type 'exit' when you want to exit.")
+
 while true do
-    -- wait for a connection from any client
+
     local client = server:accept()
-    print("New client connected")
-    -- make sure we don't block waiting for this client's line
+    -- print("New client connected")
+
     client:settimeout(10)
-    for i = 1, 3 do
+    while true do
         client:send("\r> ")
-        -- receive the line
+
         local line, err = client:receive()
-        -- if there was no error, send it back to the client
-        if not err then client:send(line .. "\n") end
-            -- done with client, close the object
-            -- client:close()
+        
+        if not err then
+            if trim(line) == "exit" then
+                break
+            else
+                local res = repl.eval(line)
+                client:send(res .. "\n")
+            end
+        end
     end
 
-    client:send("Echo end. closed.")
+    client:send("Session closed.")
     client:close()
-    print("Closed. Waiting next client.")
+    -- print("Closed. Waiting next client.")
 end

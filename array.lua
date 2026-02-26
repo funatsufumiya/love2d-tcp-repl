@@ -1,4 +1,4 @@
-local utils = require('array.utils')
+local utils = require('array_utils')
 
 local array
 
