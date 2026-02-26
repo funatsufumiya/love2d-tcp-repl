@@ -39,4 +39,4 @@ nil
 
 ## TODO
 
-- expose global `_G` between server session (thread) and love2d main session
+- expose global variable `_G` between server session (thread) and love2d main session
