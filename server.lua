@@ -10,7 +10,7 @@ local server = assert(socket.bind("*", 0))
 local ip, port = server:getsockname()
 
 
-print("Listening tcp://localhost:" .. port .. " ...")
+print("TCP (telnet) REPL is listening localhost:" .. port .. " ...")
 print("--- Please telnet to localhost on port " .. port)
 print("--- After connecting, type 'exit' when you want to exit.")
 

@@ -10,11 +10,13 @@ $ love --console .
 # or
 $ lovr --console .
 
-# TCP (telnet) REPL is listening 127.0.0.1:65471 ...
+# TCP (telnet) REPL is listening localhost:51335 ...
+# --- Please telnet to localhost on port 51335
+# --- After connecting, type 'exit' when you want to exit.
 ```
 
 ```bash
-$ telnet 127.0.0.1 65471
+$ telnet 127.0.0.1 51335
 
 > 1 + 1
 2
