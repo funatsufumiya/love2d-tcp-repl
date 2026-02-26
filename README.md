@@ -33,3 +33,7 @@ nil
 ***NOTE***: Check [Plugins](https://lovr.org/docs/Plugins) how to use them.
 
 - [lovr-luasocket](https://github.com/brainrom/lovr-luasocket)
+
+## TODO
+
+- expose global `_G` between server session (thread) and love2d main session
