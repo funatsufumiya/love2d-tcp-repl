@@ -19,10 +19,12 @@ end
 if lovr then
 	function lovr.update(dt)
 		t = t + dt
+		repl.server_update()
 	end
 else
 	function love.update(dt)
 		t = t + dt
+		repl.server_update()
 	end
 end
 

@@ -1,41 +1,76 @@
+local export = {}
 local socket = require("socket")
-local repl = require("repl")
 
 function trim(s)
    return (s:gsub("^%s*(.-)%s*$", "%1"))
 end
 
-local server = assert(socket.bind("*", 0))
--- find out which port the OS chose for us
-local ip, port = server:getsockname()
+function export.server_loop(repl_eval_fn)
+    local server = assert(socket.bind("*", 0))
+    -- find out which port the OS chose for us
+    local ip, port = server:getsockname()
 
 
-print("TCP (telnet) REPL is listening localhost:" .. port .. " ...")
-print("--- Please telnet to localhost on port " .. port)
-print("--- After connecting, type 'exit' when you want to exit.")
+    print("TCP (telnet) REPL is listening localhost:" .. port .. " ...")
+    print("--- Please telnet to localhost on port " .. port)
+    print("--- After connecting, type 'exit' when you want to exit.")
 
-while true do
+    local client_list = {}
 
-    local client = server:accept()
-    -- print("New client connected")
-
-    client:settimeout(10)
     while true do
-        client:send("\r> ")
 
-        local line, err = client:receive()
-        
-        if not err then
-            if trim(line) == "exit" then
-                break
-            else
-                local res = repl.eval(line)
-                client:send(res .. "\n")
-            end
+        local ready_socks, _, err = socket.select(client_list, nil, 0)
+
+        if err and err ~= "timeout" then
+            print(err)
         end
-    end
 
-    client:send("Session closed.")
-    client:close()
-    -- print("Closed. Waiting next client.")
+        for _, sock in ipairs(ready_socks) do
+            if sock == server then
+                print("New client " .. client)
+                local client = server:accept()
+                table.insert(client_list, client)
+            
+                client:settimeout(0)
+                client:send("\r> ")
+            else
+                print("Existing client")
+                local client = sock
+                -- treating existing client
+                local line, err = client:receive()
+                
+                if not err then
+                    if trim(line) == "exit" then
+                        client:send("Session closed.")
+                        client:close()
+                        print("Closed " .. client)
+                    else
+                        local res = repl_eval_fn(line)
+                        client:send(res .. "\n")
+                    end
+                end
+            end
+
+            -- client:send("Session closed.")
+            -- client:close()
+            -- print("Closed. Waiting next client.")
+        end
+
+        coroutine.yield()
+    end
 end
+
+function export.start(repl_eval_fn)
+    -- if lovr then
+	-- 	server_thread = lovr.thread.newThread("server.lua")
+	-- else
+	-- 	server_thread = love.thread.newThread("server.lua")
+	-- end
+	-- server_thread:start()
+
+    co = coroutine.create(export.server_loop)
+    coroutine.resume(co, repl_eval_fn)
+    return co
+end
+
+return export

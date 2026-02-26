@@ -1,6 +1,7 @@
 local export = {}
 local stringify = require('stringify')
 local array = require('array')
+local server = require('server')
 require "table.clear"
 
 local sep = package.config:sub(1,1)
@@ -8,17 +9,6 @@ local sep = package.config:sub(1,1)
 local is_lovr = _G.lovr
 if is_lovr then
   love = lovr
-end
-
-local server_thread
-
-function export.server_start()
-	if lovr then
-		server_thread = lovr.thread.newThread("server.lua")
-	else
-		server_thread = love.thread.newThread("server.lua")
-	end
-	server_thread:start()
 end
 
 export.input = {}
@@ -123,6 +113,16 @@ function export.eval(s)
   -- export.buffer = {}
 
   return buf
+end
+
+local server_coroutine
+
+function export.server_start()
+	server_coroutine = server.start(export.eval)
+end
+
+function export.server_update()
+	coroutine.resume(server_coroutine)
 end
 
 -- function export.setInput(s)
