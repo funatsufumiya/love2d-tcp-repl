@@ -36,8 +36,3 @@ nil
      You can use [prebuilt lovr executable](https://github.com/funatsufumiya/love2d-tcp-repl/releases/tag/v0.1) from releases.
 
 - [lovr-luasocket](https://github.com/brainrom/lovr-luasocket)
-
-## TODO
-
-- Expose global variable `_G` between server session (thread) and love2d main session
-    - Maybe server session should be replaced as coroutine instead of thread.

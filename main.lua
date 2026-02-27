@@ -3,17 +3,16 @@ local repl = require("repl")
 ----
 
 local t = 0
-local g = {}
-g.test_val = "hello!!!!"
+test_val = "hello!!!!"
 
 -- load
 if lovr then
 	function lovr.load()
-		repl.server_start(g)
+		repl.server_start()
 	end
 else
 	function love.load()
-		repl.server_start(g)
+		repl.server_start()
 	end
 end
 
@@ -21,10 +20,12 @@ end
 if lovr then
 	function lovr.update(dt)
 		t = t + dt
+		repl.server_update()
 	end
 else
 	function love.update(dt)
 		t = t + dt
+		repl.server_update()
 	end
 end
 

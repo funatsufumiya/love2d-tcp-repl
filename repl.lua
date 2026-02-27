@@ -12,19 +12,28 @@ end
 
 local server_thread
 
-function export.server_start(global)
-  print(global)
+function export.server_start()
 	if lovr then
 		server_thread = lovr.thread.newThread("server.lua")
 	else
 		server_thread = love.thread.newThread("server.lua")
 	end
 	server_thread:start()
+end
 
-  if lovr then
-    lovr.thread.getChannel( 'globals' ):push( global )
-  else
-    love.thread.getChannel( 'globals' ):push( global )
+function get_channel(s)
+    if lovr then
+        return lovr.thread.getChannel(s)
+    else
+        return love.thread.getChannel(s)
+    end
+end
+
+function export.server_update()
+  local input = get_channel("netrepl_input"):pop()
+  if input ~= nil then
+    local res = export.eval(input)
+    get_channel("netrepl_result"):push(res)
   end
 end
 
@@ -72,26 +81,9 @@ function export.eval_impl(inCodeStr)
       return nil
       -- return export.err(nil, )
     end
-
-    -- local r,s=fn(inCodeStr)
-    -- if r~=nil then
-    --     return r()
-    -- else
-    --     export.err(s)
-    -- end
 end
 
--- local repl = coroutine.create(function ()
---   while true
---   do
---     export.out(export.eval(coroutine.yield))
---   end
--- end)
-
--- coroutine.resume(repl)
-
-function export.eval(global, s)
-  local g = global
+function export.eval(s)
   -- dp(s)
 
   _G.print = function(...)
@@ -107,9 +99,7 @@ function export.eval(global, s)
     return nil
   end
   
-  -- coroutine.resume(repl, s)
   export.out({stringify(export.eval_impl(s))})
-  -- table.insert(export.buffer, "> " .. s)
   
   -- dp(#export.buffer)
 
@@ -117,10 +107,6 @@ function export.eval(global, s)
   _G.error = de
   _G.warn = dw
 
-  -- local buf = ""
-  -- for line in export.buffer do
-  --   buf = buf .. "\n" .. line
-  -- end
   local newline = "\n"
   if sep == "\\" then
     -- windows workaround
@@ -128,25 +114,8 @@ function export.eval(global, s)
   end
   local buf = table.concat(export.buffer, newline)
   table.clear(export.buffer)
-  -- export.buffer = {}
 
   return buf
 end
-
--- function export.setInput(s)
---   export.input = s
--- end
-
--- function export.getInput()
---   return export.input
--- end
-
--- function export.getBuffer()
---   return export.buffer
--- end
-
--- function export.getBufferLen()
---   return #export.buffer
--- end
 
 return export
