@@ -25,6 +25,25 @@ test
 nil
 ```
 
+## How to embed to your app
+
+Please check main.lua. Minimal setup is below:
+
+```lua
+local repl = require("repl")
+
+function love.load()
+    repl.server_start() -- start server
+
+    -- if you want to specify port number:
+    --   repl.server_start(7890) 
+end
+
+function love.update(dt)
+    repl.server_update() -- update (eval input)
+end
+```
+
 ## Dependencies
 
 - [stringify (MIT-LICENSE)](https://github.com/kitsunies/stringify.lua)

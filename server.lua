@@ -1,3 +1,11 @@
+local request_port = ...
+if type(request_port) == "table" then
+    request_port = request_port[1]
+end
+if request_port == nil then
+    request_port = 0
+end
+
 local socket = require("socket")
 -- local repl = require("repl")
 
@@ -46,7 +54,7 @@ end
 
 local g
 
-local server = assert(socket.bind("*", 0))
+local server = assert(socket.bind("*", request_port))
 -- find out which port the OS chose for us
 local ip, port = server:getsockname()
 

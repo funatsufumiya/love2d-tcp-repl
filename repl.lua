@@ -12,13 +12,13 @@ end
 
 local server_thread
 
-function export.server_start()
+function export.server_start(port)
 	if lovr then
 		server_thread = lovr.thread.newThread("server.lua")
 	else
 		server_thread = love.thread.newThread("server.lua")
 	end
-	server_thread:start()
+	server_thread:start(port)
 end
 
 function get_channel(s)
