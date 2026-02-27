@@ -25,7 +25,7 @@ test
 nil
 ```
 
-## How to embed to your app
+## How to embed into your app
 
 Please check main.lua. Minimal setup is below:
 
